@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Children</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container mt-4">
+        <h2 class="text-center">Manage Child Profiles</h2>
+
+        <button class="btn btn-success mb-3" onclick="addChild()">+ Add Child</button>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="childList">
+                <!-- Child profiles will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let children = JSON.parse(localStorage.getItem("children")) || [];
+
+        function displayChildren() {
+            let childList = document.getElementById("childList");
+            childList.innerHTML = "";
+            children.forEach((child, index) => {
+                childList.innerHTML += `
+                    <tr>
+                        <td>${child.name}</td>
+                        <td>${child.age}</td>
+                        <td>${child.gender}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="editChild(${index})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteChild(${index})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function addChild() {
+            let name = prompt("Enter child's name:");
+            let age = prompt("Enter child's age:");
+            let gender = prompt("Enter child's gender:");
+
+            if (name && age && gender) {
+                children.push({ name, age, gender });
+                localStorage.setItem("children", JSON.stringify(children));
+                displayChildren();
+            }
+        }
+
+        function editChild(index) {
+            let name = prompt("Update child's name:", children[index].name);
+            let age = prompt("Update child's age:", children[index].age);
+            let gender = prompt("Update child's gender:", children[index].gender);
+
+            if (name && age && gender) {
+                children[index] = { name, age, gender };
+                localStorage.setItem("children", JSON.stringify(children));
+                displayChildren();
+            }
+        }
+
+        function deleteChild(index) {
+            children.splice(index, 1);
+            localStorage.setItem("children", JSON.stringify(children));
+            displayChildren();
+        }
+
+        displayChildren();
+    </script>
+
+</body>
+</html>

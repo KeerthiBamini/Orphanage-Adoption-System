@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Home for Everyone - Orphanage Directory</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #ffe6e6;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ffb3b3;
+      color: white;
+      padding: 20px;
+      font-size: 2em;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      text-align: center;
+      border: 2px dashed #ff9999;
+      cursor: pointer;
+    }
+    .button {
+      background-color: #ff6666;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .button:hover {
+      background-color: #ff3333;
+    }
+    .back-button-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><i class="fa fa-heart"></i> A Home for Everyone</h1>
+  </header>
+
+  <div id="orphanage-list" class="grid"></div>
+
+  <div id="children-list" class="hidden">
+    <h2 id="orphanage-name" class="text-center"></h2>
+    <div class="grid" id="children-grid"></div>
+    <div class="back-button-container">
+      <button class="button" onclick="goBackToOrphanages()">Back</button>
+    </div>
+  </div>
+
+  <div id="child-details" class="hidden text-center">
+    <h2 id="child-name"></h2>
+    <p id="child-age"></p>
+    <p id="child-gender"></p>
+    <p id="child-bio"></p>
+    <p id="child-nationality"></p>
+    <p id="child-religion"></p>
+    <p id="child-blood"></p>
+    <p id="child-medical"></p>
+    <p id="child-disability"></p>
+    <p id="child-education"></p>
+    <p id="child-hobbies"></p>
+    <p id="child-personality"></p>
+    <p id="child-adoption-status"></p>
+    <p id="child-legal-status"></p>
+    <p id="child-guardian-notes"></p>
+    <a id="adoption-link" href="#">
+      <button class="button">Adopt</button>
+    </a>
+    <div class="back-button-container">
+      <button class="button" onclick="goBackToChildren()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    const orphanageNames = [
+      "SOS Village", "Boys Town", "Hope Orphanage", "Sunshine Home", "Little Angels",
+      "Haven Shelter", "Rainbow Kids", "Future Stars", "Helping Hands", "Happy Haven",
+      "Guardian House", "Safe Nest", "Smiles Shelter", "Bright Future Home", "Angels’ Abode",
+      "Peaceful Place", "Joyful Journey", "Shining Stars", "Compassion House", "Dream Nest"
+    ];
+
+    const locations = [
+      "New York", "Los Angeles", "Chicago", "Miami", "Dallas", "Seattle", "Denver", "Boston", "San Francisco", "Phoenix",
+      "Atlanta", "Houston", "San Diego", "Orlando", "Cleveland", "Detroit", "Baltimore", "Portland", "Cincinnati", "Charlotte"
+    ];
+
+    const sampleChildren = [
+      {
+        name: "Emma", age: 5, gender: "Female", bio: "Loves painting.",
+        nationality: "American", religion: "Christianity", blood: "O+",
+        medical: "No major illness", disability: "None",
+        education: "Grade 1 at ABC School", hobbies: "Reading, Drawing",
+        personality: "Cheerful", adoption: "Available",
+        legal: "Cleared", guardian: "Friendly and kind"
+      },
+      {
+        name: "Jake", age: 6, gender: "Male", bio: "Enjoys soccer.",
+        nationality: "American", religion: "Christianity", blood: "A+",
+        medical: "Healthy", disability: "None",
+        education: "Grade 1 at XYZ School", hobbies: "Soccer, Chess",
+        personality: "Playful", adoption: "Available",
+        legal: "Cleared", guardian: "Loves making friends"
+      },
+      {
+        name: "Sofia", age: 7, gender: "Female", bio: "Loves dancing.",
+        nationality: "American", religion: "Christianity", blood: "B+",
+        medical: "Asthma", disability: "None",
+        education: "Grade 2 at DEF School", hobbies: "Dancing, Singing",
+        personality: "Lively", adoption: "Available",
+        legal: "Cleared", guardian: "Helpful to others"
+      },
+      {
+        name: "Liam", age: 8, gender: "Male", bio: "Tech enthusiast.",
+        nationality: "American", religion: "Christianity", blood: "AB+",
+        medical: "Wears glasses", disability: "None",
+        education: "Grade 3 at GHI School", hobbies: "Coding, Robotics",
+        personality: "Curious", adoption: "Available",
+        legal: "Cleared", guardian: "Quick learner"
+      },
+      {
+        name: "Ava", age: 9, gender: "Female", bio: "Enjoys music and art.",
+        nationality: "American", religion: "Christianity", blood: "O-",
+        medical: "Healthy", disability: "None",
+        education: "Grade 4 at JKL School", hobbies: "Piano, Drawing",
+        personality: "Creative", adoption: "Available",
+        legal: "Cleared", guardian: "Loves quiet spaces"
+      }
+    ];
+
+    // Generate orphanages with children
+    const orphanages = orphanageNames.map((name, index) => ({
+      name,
+      location: locations[index],
+      children: sampleChildren.map(child => ({
+        ...child,
+        name: `${child.name} ${index + 1}` // Make each child name unique
+      }))
+    }));
+
+    let currentOrphanage = null;
+    let currentChild = null;
+
+    const orphanageListEl = document.getElementById('orphanage-list');
+    const childrenListEl = document.getElementById('children-list');
+    const childDetailsEl = document.getElementById('child-details');
+    const orphanageNameEl = document.getElementById('orphanage-name');
+    const childrenGridEl = document.getElementById('children-grid');
+    const childNameEl = document.getElementById('child-name');
+    const childAgeEl = document.getElementById('child-age');
+    const childGenderEl = document.getElementById('child-gender');
+    const childBioEl = document.getElementById('child-bio');
+    const childNationalityEl = document.getElementById('child-nationality');
+    const childReligionEl = document.getElementById('child-religion');
+    const childBloodEl = document.getElementById('child-blood');
+    const childMedicalEl = document.getElementById('child-medical');
+    const childDisabilityEl = document.getElementById('child-disability');
+    const childEducationEl = document.getElementById('child-education');
+    const childHobbiesEl = document.getElementById('child-hobbies');
+    const childPersonalityEl = document.getElementById('child-personality');
+    const childAdoptionStatusEl = document.getElementById('child-adoption-status');
+    const childLegalStatusEl = document.getElementById('child-legal-status');
+    const childGuardianNotesEl = document.getElementById('child-guardian-notes');
+    const adoptionLinkEl = document.getElementById('adoption-link');
+
+    function init() {
+      renderOrphanages();
+    }
+
+    function renderOrphanages() {
+      orphanageListEl.innerHTML = '';
+      orphanages.forEach(orphanage => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h2>${orphanage.name}</h2><p>${orphanage.location}</p>`;
+        card.addEventListener('click', () => showChildren(orphanage));
+        orphanageListEl.appendChild(card);
+      });
+    }
+
+    function showChildren(orphanage) {
+      currentOrphanage = orphanage;
+      orphanageNameEl.textContent = orphanage.name;
+      childrenGridEl.innerHTML = '';
+
+      orphanage.children.forEach(child => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h2>${child.name}</h2>
+          <p>Age: ${child.age}</p>
+          <p>${child.bio}</p>
+          <button class="button">View Details</button>
+        `;
+        card.querySelector('button').addEventListener('click', () => showChildDetails(child));
+        childrenGridEl.appendChild(card);
+      });
+
+      orphanageListEl.classList.add('hidden');
+      childrenListEl.classList.remove('hidden');
+      childDetailsEl.classList.add('hidden');
+    }
+
+    function showChildDetails(child) {
+      currentChild = child;
+      childNameEl.textContent = child.name;
+      childAgeEl.textContent = `Age: ${child.age}`;
+      childGenderEl.textContent = `Gender: ${child.gender}`;
+      childBioEl.textContent = child.bio;
+      childNationalityEl.textContent = `Nationality: ${child.nationality}`;
+      childReligionEl.textContent = `Religion: ${child.religion}`;
+      childBloodEl.textContent = `Blood Group: ${child.blood}`;
+      childMedicalEl.textContent = `Medical History: ${child.medical}`;
+      childDisabilityEl.textContent = `Disability Status: ${child.disability}`;
+      childEducationEl.textContent = `Education: ${child.education}`;
+      childHobbiesEl.textContent = `Hobbies: ${child.hobbies}`;
+      childPersonalityEl.textContent = `Personality: ${child.personality}`;
+      childAdoptionStatusEl.textContent = `Adoption Status: ${child.adoption}`;
+      childLegalStatusEl.textContent = `Legal Status: ${child.legal}`;
+      childGuardianNotesEl.textContent = `Guardian Notes: ${child.guardian}`;
+      adoptionLinkEl.href = `adoption-form.html?child=${encodeURIComponent(child.name)}`;
+
+      childrenListEl.classList.add('hidden');
+      childDetailsEl.classList.remove('hidden');
+    }
+
+    function goBackToOrphanages() {
+      orphanageListEl.classList.remove('hidden');
+      childrenListEl.classList.add('hidden');
+      childDetailsEl.classList.add('hidden');
+    }
+
+    function goBackToChildren() {
+      childDetailsEl.classList.add('hidden');
+      childrenListEl.classList.remove('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

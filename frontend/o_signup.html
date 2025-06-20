@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orphanage Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #1cc88a;
+            --dark-color: #5a5c69;
+        }
+        
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .registration-card {
+            border-radius: 15px;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            border: none;
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.5rem;
+        }
+        
+        .login-link-container {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e3e6f0;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        
+        .login-link {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .login-link:hover {
+            text-decoration: underline;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2e59d9;
+            border-color: #2653d4;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+        }
+        
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #dddfeb;
+            color: #b7b9cc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .step-indicator.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .step-indicator.completed {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
+        
+        .required-field::after {
+            content: " *";
+            color: red;
+        }
+        
+        .password-requirements ul {
+            margin-bottom: 0;
+        }
+        
+        .text-success {
+            color: var(--secondary-color) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card registration-card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-header">
+                        <h2 class="text-center">Orphanage Registration</h2>
+                        <p class="text-center mb-0">Please fill in all required fields to register your orphanage</p>
+                    </div>
+                    
+                    <!-- Login Link Container -->
+                    <div class="login-link-container">
+                        Already have an account? <a href="login.html" class="login-link">Login here</a>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <!-- Multi-step progress bar -->
+                        <div class="container-fluid py-3 px-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="step-indicator active" id="step1-indicator">1</div>
+                                <div class="progress flex-grow-1 mx-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%" id="progress-bar"></div>
+                                </div>
+                                <div class="step-indicator" id="step2-indicator">2</div>
+                                <div class="progress flex-grow-1 mx-2">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div class="step-indicator" id="step3-indicator">3</div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>Orphanage Info</span>
+                                <span>Admin Details</span>
+                                <span>Account Setup</span>
+                            </div>
+                        </div>
+
+                        <form id="orphanageForm" class="p-4 needs-validation" novalidate>
+                            <!-- Step 1: Orphanage Information -->
+                            <div class="step" id="step1">
+                                <h4 class="section-title mb-4">Orphanage Information</h4>
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="orphanageName" class="form-label required-field">Orphanage Name</label>
+                                        <input type="text" class="form-control" id="orphanageName" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the orphanage name.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="registrationNumber" class="form-label required-field">Registration Number</label>
+                                        <input type="text" class="form-control" id="registrationNumber" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the registration number.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="orphanageType" class="form-label required-field">Type of Orphanage</label>
+                                        <select class="form-select" id="orphanageType" required>
+                                            <option value="" selected disabled>Select type</option>
+                                            <option value="government">Government-run</option>
+                                            <option value="private">Private NGO</option>
+                                            <option value="religious">Religious Organization</option>
+                                            <option value="community">Community-based</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select the orphanage type.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="yearEstablished" class="form-label">Year Established</label>
+                                        <input type="number" class="form-control" id="yearEstablished" min="1900" max="2023">
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="address" class="form-label required-field">Address</label>
+                                        <input type="text" class="form-control" id="address" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the address.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="city" class="form-label required-field">City</label>
+                                        <input type="text" class="form-control" id="city" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the city.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="state" class="form-label required-field">State/Province</label>
+                                        <input type="text" class="form-control" id="state" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the state/province.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="country" class="form-label required-field">Country</label>
+                                        <select class="form-select" id="country" required>
+                                            <option value="" selected disabled>Select country</option>
+                                            <option value="India">India</option>
+                                            <option value="USA">United States</option>
+                                            <option value="UK">United Kingdom</option>
+                                            <!-- Add more countries as needed -->
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select the country.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="postalCode" class="form-label required-field">Postal Code</label>
+                                        <input type="text" class="form-control" id="postalCode" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the postal code.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="phone" class="form-label required-field">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid phone number.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label required-field">Email</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid email address.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="website" class="form-label">Website (if any)</label>
+                                        <input type="url" class="form-control" id="website">
+                                        <div class="invalid-feedback">
+                                            Please provide a valid website URL.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="capacity" class="form-label">Capacity (Children)</label>
+                                        <input type="number" class="form-control" id="capacity" min="1">
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="staffCount" class="form-label">Current Staff Count</label>
+                                        <input type="number" class="form-control" id="staffCount" min="0">
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="mission" class="form-label">Mission Statement</label>
+                                        <textarea class="form-control" id="mission" rows="3" maxlength="200"></textarea>
+                                        <small class="text-muted">Maximum 200 characters</small>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="documents" class="form-label required-field">Upload Registration Documents</label>
+                                        <input type="file" class="form-control" id="documents" accept=".pdf,.jpg,.jpeg,.png" required multiple>
+                                        <small class="text-muted">Accepted formats: PDF, JPG, PNG (Max 5MB each)</small>
+                                        <div class="invalid-feedback">
+                                            Please upload required documents.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(1, 2)">Next</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2: Administrator Details -->
+                            <div class="step" id="step2" style="display: none;">
+                                <h4 class="section-title mb-4">Administrator Details</h4>
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="adminName" class="form-label required-field">Full Name</label>
+                                        <input type="text" class="form-control" id="adminName" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the administrator's name.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="adminPosition" class="form-label required-field">Role/Position</label>
+                                        <input type="text" class="form-control" id="adminPosition" required>
+                                        <div class="invalid-feedback">
+                                            Please provide the administrator's position.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="adminPhone" class="form-label required-field">Contact Number</label>
+                                        <input type="tel" class="form-control" id="adminPhone" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid phone number.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="adminEmail" class="form-label required-field">Email</label>
+                                        <input type="email" class="form-control" id="adminEmail" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid email address.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <label for="idProof" class="form-label required-field">Upload ID Proof</label>
+                                        <input type="file" class="form-control" id="idProof" accept=".pdf,.jpg,.jpeg,.png" required>
+                                        <small class="text-muted">Accepted formats: PDF, JPG, PNG (Max 5MB)</small>
+                                        <div class="invalid-feedback">
+                                            Please upload ID proof.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(2, 1)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(2, 3)">Next</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3: Account Setup -->
+                            <div class="step" id="step3" style="display: none;">
+                                <h4 class="section-title mb-4">Account Setup</h4>
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="username" class="form-label required-field">Username</label>
+                                        <input type="text" class="form-control" id="username" required>
+                                        <div class="invalid-feedback">
+                                            Please choose a username.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="password" class="form-label required-field">Password</label>
+                                        <input type="password" class="form-control" id="password" minlength="8" required>
+                                        <div class="invalid-feedback">
+                                            Password must be at least 8 characters.
+                                        </div>
+                                        <div class="password-requirements mt-1">
+                                            <small class="text-muted">Requirements:</small>
+                                            <ul class="list-unstyled">
+                                                <li id="length-req" class="text-danger">✓ 8+ characters</li>
+                                                <li id="uppercase-req" class="text-danger">✓ 1 uppercase letter</li>
+                                                <li id="number-req" class="text-danger">✓ 1 number</li>
+                                                <li id="special-req" class="text-danger">✓ 1 special character</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="confirmPassword" class="form-label required-field">Confirm Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" required>
+                                        <div class="invalid-feedback">
+                                            Passwords must match.
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="terms" required>
+                                            <label class="form-check-label" for="terms">
+                                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                You must agree to the terms.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(3, 2)">Previous</button>
+                                    <button type="submit" class="btn btn-success">Submit Registration</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                    <!-- Add your actual terms here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        
+        // Multi-step form navigation
+        function nextStep(current, next) {
+            // Validate current step before proceeding
+            const currentStep = document.getElementById(`step${current}`);
+            const inputs = currentStep.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) return;
+            
+            // Hide current step and show next
+            document.getElementById(`step${current}`).style.display = 'none';
+            document.getElementById(`step${next}`).style.display = 'block';
+            
+            // Update progress indicators
+            document.getElementById(`step${current}-indicator`).classList.remove('active');
+            document.getElementById(`step${current}-indicator`).classList.add('completed');
+            document.getElementById(`step${next}-indicator`).classList.add('active');
+            
+            // Update progress bar
+            const progress = (next - 1) * 50;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+        
+        function prevStep(current, prev) {
+            // Hide current step and show previous
+            document.getElementById(`step${current}`).style.display = 'none';
+            document.getElementById(`step${prev}`).style.display = 'block';
+            
+            // Update progress indicators
+            document.getElementById(`step${current}-indicator`).classList.remove('active');
+            document.getElementById(`step${prev}-indicator`).classList.add('active');
+            
+            // Update progress bar
+            const progress = (prev - 1) * 50;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+        
+        // Password validation
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const lengthReq = document.getElementById('length-req');
+            const uppercaseReq = document.getElementById('uppercase-req');
+            const numberReq = document.getElementById('number-req');
+            const specialReq = document.getElementById('special-req');
+            
+            // Check length
+            if (password.length >= 8) {
+                lengthReq.classList.remove('text-danger');
+                lengthReq.classList.add('text-success');
+            } else {
+                lengthReq.classList.remove('text-success');
+                lengthReq.classList.add('text-danger');
+            }
+            
+            // Check uppercase
+            if (/[A-Z]/.test(password)) {
+                uppercaseReq.classList.remove('text-danger');
+                uppercaseReq.classList.add('text-success');
+            } else {
+                uppercaseReq.classList.remove('text-success');
+                uppercaseReq.classList.add('text-danger');
+            }
+            
+            // Check number
+            if (/\d/.test(password)) {
+                numberReq.classList.remove('text-danger');
+                numberReq.classList.add('text-success');
+            } else {
+                numberReq.classList.remove('text-success');
+                numberReq.classList.add('text-danger');
+            }
+            
+            // Check special character
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                specialReq.classList.remove('text-danger');
+                specialReq.classList.add('text-success');
+            } else {
+                specialReq.classList.remove('text-success');
+                specialReq.classList.add('text-danger');
+            }
+        });
+        
+        // Confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (password !== confirmPassword) {
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+            }
+        });
+
+        // Form submission handler
+        document.getElementById('orphanageForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Collect all form data
+            const formData = {
+                orphanage_name: document.getElementById('orphanageName').value,
+                registration_number: document.getElementById('registrationNumber').value,
+                orphanage_type: document.getElementById('orphanageType').value,
+                year_established: document.getElementById('yearEstablished').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state_province: document.getElementById('state').value,
+                country: document.getElementById('country').value,
+                postal_code: document.getElementById('postalCode').value,
+                phone_number: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                website: document.getElementById('website').value,
+                capacity: document.getElementById('capacity').value,
+                current_staff_count: document.getElementById('staffCount').value,
+                mission_statement: document.getElementById('mission').value,
+                admin_name: document.getElementById('adminName').value,
+                admin_position: document.getElementById('adminPosition').value,
+                admin_phone: document.getElementById('adminPhone').value,
+                admin_email: document.getElementById('adminEmail').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    window.location.href = './login.html'; // Redirect to login after successful signup
+                } else {
+                    alert(`Error: ${result.message}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during registration');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adoption Form</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6e6;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px dashed #ff9999;
+        }
+        h2 {
+            color: #ff6666;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #ff6666;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #ff3333;
+        }
+        .back-button {
+            background-color: #ccc;
+            margin-top: 10px;
+        }
+        .back-button:hover {
+            background-color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Adoption Form</h2>
+        <form id="adoptionForm">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="childName">Child's Name:</label>
+            <input type="text" id="childName" name="childName" readonly>
+
+            <label for="reason">Why do you want to adopt?</label>
+            <textarea id="reason" name="reason" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        // Pre-fill child name from URL (if passed)
+        const urlParams = new URLSearchParams(window.location.search);
+        const childName = urlParams.get('child');
+        if (childName) {
+            document.getElementById("childName").value = childName;
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        document.getElementById("adoptionForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Adoption request submitted successfully!");
+            window.location.href = "homepage.html"; // Redirect to home page
+        });
+    </script>
+
+</body>
+</html>

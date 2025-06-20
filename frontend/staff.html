@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .filter-buttons {
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons button {
+            background-color: #8b3d49;
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .filter-buttons button.active {
+            background-color: #d3a4b0;
+        }
+
+        .team-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .team-member {
+            width: 250px;
+            text-align: center;
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .team-member h3 {
+            font-size: 18px;
+            margin: 10px 0 5px;
+            color: #551a8b;
+        }
+
+        .team-member p {
+            font-size: 14px;
+            color: gray;
+            margin: 3px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin-top: 40px;
+            text-align: left;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .footer div {
+            max-width: 300px;
+        }
+
+        .footer h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .footer p, .footer a {
+            font-size: 14px;
+            color: gray;
+            text-decoration: none;
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Meet Our Dedicated Staff</h2>
+
+    <div class="filter-buttons">
+        <button onclick="filterTeam('all')" class="active">All</button>
+        <button onclick="filterTeam('india')">India</button>
+        <button onclick="filterTeam('hyderabad')">Hyderabad</button>
+        <button onclick="filterTeam('newyork')">New York</button>
+    </div>
+
+    <div class="team-container">
+        <!-- India Team -->
+        <div class="team-member india">
+            <img src="staff1.jpg" alt="Tanya Knapp">
+            <h3>Tanya Knapp</h3>
+            <p>Case Manager</p>
+            <p>India</p>
+        </div>
+
+        <!-- Hyderabad Team -->
+        <div class="team-member hyderabad">
+            <img src="staff2.jpg" alt="Brooke Hill">
+            <h3>Brooke Hill</h3>
+            <p>Social Worker</p>
+            <p>Hyderabad</p>
+        </div>
+        <div class="team-member hyderabad">
+            <img src="staff3.jpg" alt="Marri Syndergaard">
+            <h3>Marri Syndergaard</h3>
+            <p>Volunteer Office Assistant</p>
+            <p>Hyderabad</p>
+        </div>
+        <div class="team-member hyderabad">
+            <img src="staff4.jpg" alt="Kathy Holliday">
+            <h3>Kathy Holliday</h3>
+            <p>International Specialist</p>
+            <p>Hyderabad</p>
+        </div>
+
+        <!-- New York Team -->
+        <div class="team-member newyork">
+            <img src="staff5.jpg" alt="Laura Boudreau">
+            <h3>Laura Boudreau</h3>
+            <p>Executive Assistant</p>
+            <p>New York</p>
+        </div>
+        <div class="team-member newyork">
+            <img src="staff6.jpg" alt="Jeanne Petersen">
+            <h3>Jeanne Petersen</h3>
+            <p>CFO & Bookkeeper</p>
+            <p>New York</p>
+        </div>
+        <div class="team-member newyork">
+            <img src="staff7.jpg" alt="Kim Looper">
+            <h3>Kim Looper</h3>
+            <p>Assistant Bookkeeper</p>
+            <p>New York</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div>
+            <h4>About CHI</h4>
+            <p>Children’s House International is a Hague accredited, non-profit international adoption agency.</p>
+            <p>📞 (360) 383-0623</p>
+            <p>📧 inquiry@chiadopt.org</p>
+            <p>📍 8850 Bender Road, Suite 202, Lynden, WA 98264</p>
+        </div>
+        <div>
+            <h4>Links</h4>
+            <a href="#">Home</a>
+            <a href="#">About Us</a>
+            <a href="#">Our Team</a>
+            <a href="#">International Adoption</a>
+            <a href="#">Download Documents</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div>
+            <h4>Support</h4>
+            <a href="#">Home Study Services</a>
+            <a href="#">Post Adoption Services</a>
+            <a href="#">Medical Resources</a>
+            <a href="#">Financial Resources</a>
+            <a href="#">Parent Education</a>
+            <a href="#">Articles</a>
+        </div>
+    </div>
+
+    <script>
+        function filterTeam(city) {
+            let teamMembers = document.querySelectorAll(".team-member");
+            let buttons = document.querySelectorAll(".filter-buttons button");
+
+            teamMembers.forEach(member => {
+                if (city === "all" || member.classList.contains(city)) {
+                    member.style.display = "block";
+                } else {
+                    member.style.display = "none";
+                }
+            });
+
+            buttons.forEach(btn => btn.classList.remove("active"));
+            event.target.classList.add("active");
+        }
+    </script>
+
+</body>
+</html>

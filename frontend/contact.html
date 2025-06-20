@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact Us - Orphanage Adoption</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>If you have any questions, feel free to reach out to us!</p>
+
+    <div class="contact-info">
+      <p><strong>Address:</strong> 123 Hope Street, Kind City, Country</p>
+      <p><strong>Phone:</strong> +123 456 7890</p>
+      <p><strong>Email:</strong> contact@orphanageadoption.org</p>
+    </div>
+
+    <form class="contact-form" action="/send-message" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="subject" placeholder="Subject">
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</body>
+</html>

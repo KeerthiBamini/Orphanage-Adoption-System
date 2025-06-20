@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Adoption Requests</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f4f4; }
+        .container { max-width: 800px; margin-top: 20px; }
+        .status-badge { font-size: 14px; padding: 5px 10px; border-radius: 5px; }
+        .pending { background-color: orange; color: white; }
+        .approved { background-color: green; color: white; }
+        .rejected { background-color: red; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container bg-white p-4 rounded shadow">
+    <h3 class="text-center">Adoption Requests Management</h3>
+    
+    <div class="mb-3">
+        <label for="statusFilter" class="form-label"><b>Filter by Status:</b></label>
+        <select class="form-select" id="statusFilter" onchange="loadRequests()">
+            <option value="">Recently Added Requests (Pending)</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+    </div>
+
+    <table class="table table-bordered mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Parent Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="adoptionRequests"></tbody>
+    </table>
+</div>
+
+<script>
+    let adoptionRequests = [
+        { id: 1, name: "John Doe", email: "john@example.com", status: "Pending", childAssigned: "" },
+        { id: 2, name: "Jane Smith", email: "jane@example.com", status: "Pending", childAssigned: "" },
+        { id: 3, name: "Michael Lee", email: "michael@example.com", status: "Approved", childAssigned: "Emily" },
+        { id: 4, name: "Alice Brown", email: "alice@example.com", status: "Rejected", childAssigned: "" },
+        { id: 5, name: "Robert Johnson", email: "robert.johnson@example.com", status: "Pending", childAssigned: "" },
+        { id: 6, name: "Laura Wilson", email: "laura.wilson@example.com", status: "Approved", childAssigned: "Jack" },
+        { id: 7, name: "David Clark", email: "david.clark@example.com", status: "Pending", childAssigned: "" },
+        { id: 8, name: "Olivia Davis", email: "olivia.davis@example.com", status: "Rejected", childAssigned: "" },
+        { id: 9, name: "Emily Martinez", email: "emily.martinez@example.com", status: "Pending", childAssigned: "" },
+        { id: 10, name: "Daniel Walker", email: "daniel.walker@example.com", status: "Approved", childAssigned: "Sophia" }
+    ];
+
+    let availableChildren = ["Sophia", "Jack", "Liam", "Noah", "Ava", "Mia","Emma","Mason","lucas"];
+
+    function loadRequests() {
+        let statusFilter = document.getElementById("statusFilter").value;
+        let tableBody = document.getElementById("adoptionRequests");
+        tableBody.innerHTML = "";
+
+        let filteredRequests = adoptionRequests.filter(req => !statusFilter || req.status === statusFilter);
+
+        filteredRequests.forEach(request => {
+            let row = `<tr>
+                <td>${request.name}</td>
+                <td>${request.email}</td>
+                <td><span class="status-badge ${request.status.toLowerCase()}">${request.status}</span></td>
+                <td>
+                    ${request.status === "Pending" ? `
+                        <button class="btn btn-success btn-sm" onclick="approveRequest(${request.id})">Approve</button>
+                        <button class="btn btn-danger btn-sm" onclick="rejectRequest(${request.id})">Reject</button>
+                    ` : ""}
+                    ${request.status === "Approved" ? `
+                        <button class="btn btn-primary btn-sm" onclick="assignChild(${request.id})">Assign Child</button>
+                    ` : ""}
+                </td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    }
+
+    function approveRequest(id) {
+        let request = adoptionRequests.find(req => req.id === id);
+        request.status = "Approved";
+        loadRequests();
+    }
+
+    function rejectRequest(id) {
+        let request = adoptionRequests.find(req => req.id === id);
+        request.status = "Rejected";
+        loadRequests();
+    }
+
+    function assignChild(id) {
+        let request = adoptionRequests.find(req => req.id === id);
+        let selectedChild = prompt("Available Children:\n" + availableChildren.join(", ") + "\n\nEnter child's name:");
+        if (selectedChild && availableChildren.includes(selectedChild)) {
+            request.childAssigned = selectedChild;
+            availableChildren = availableChildren.filter(child => child !== selectedChild);
+            alert(`Child ${selectedChild} assigned to ${request.name}`);
+            loadRequests();
+        } else {
+            alert("Invalid selection or child not available.");
+        }
+    }
+
+    window.onload = loadRequests;
+</script>
+
+
+</body>
+</html>
